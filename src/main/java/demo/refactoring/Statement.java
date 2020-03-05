@@ -5,9 +5,9 @@ import java.util.Map;
 public class Statement {
 
     public static String print(Invoice invoice, Map<String, Play> plays) throws Exception {
-        int totalAmount = 0;
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
+        int totalAmount = 0;
         for (Performance perf : invoice.getPerformances()) {
             // 注文の内訳を出力
             result.append("  ").append(playFor(plays, perf).getName()).append(": ").append(amountFor(perf, playFor(plays, perf)) / 100).append(" (").append(perf.getAudience()).append(" seats)\n");
