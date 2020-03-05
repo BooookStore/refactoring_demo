@@ -10,17 +10,16 @@ public class Statement {
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
         for (Performance perf : invoice.getPerformances()) {
-            Play play = playFor(plays, perf);
             int thisAmount;
 
-            thisAmount = amountFor(perf, play);
+            thisAmount = amountFor(perf, playFor(plays, perf));
 
             // ボリューム特典ポイントを加算
             volumeCredits += Math.max(perf.getAudience() - 30, 0);
             // 喜劇のときは10人につき、さらにポイントを加算
-            if ("comendy".equals(play.getType())) volumeCredits += Math.floor(perf.getAudience() / 5.0);
+            if ("comendy".equals(playFor(plays, perf).getType())) volumeCredits += Math.floor(perf.getAudience() / 5.0);
             // 注文の内訳を出力
-            result.append("  ").append(play.getName()).append(": ").append(thisAmount / 100).append(" (").append(perf.getAudience()).append(" seats)\n");
+            result.append("  ").append(playFor(plays, perf).getName()).append(": ").append(thisAmount / 100).append(" (").append(perf.getAudience()).append(" seats)\n");
             totalAmount += thisAmount;
         }
         result.append("Amount owed is ").append(totalAmount / 100).append("\n");
