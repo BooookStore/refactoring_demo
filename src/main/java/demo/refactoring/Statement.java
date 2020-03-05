@@ -10,7 +10,7 @@ public class Statement {
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
         for (Performance perf : invoice.getPerformances()) {
-            Play play = plays.get(perf.getPlayID());
+            Play play = playFor(plays, perf);
             int thisAmount;
 
             thisAmount = amountFor(perf, play);
@@ -26,6 +26,10 @@ public class Statement {
         result.append("Amount owed is ").append(totalAmount / 100).append("\n");
         result.append("You earned ").append(volumeCredits).append(" credits");
         return result.toString();
+    }
+
+    private static Play playFor(Map<String, Play> plays, Performance perf) {
+        return plays.get(perf.getPlayID());
     }
 
     private static int amountFor(Performance aPerformance, Play play) throws Exception {
