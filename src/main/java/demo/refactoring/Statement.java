@@ -13,23 +13,7 @@ public class Statement {
             Play play = plays.get(perf.getPlayID());
             int thisAmount;
 
-            switch (play.getType()) {
-                case "tragedy":
-                    thisAmount = 40000;
-                    if (perf.getAudience() > 30) {
-                        thisAmount += 1000 * (perf.getAudience() - 30);
-                    }
-                    break;
-                case "comedy":
-                    thisAmount = 30000;
-                    if (perf.getAudience() > 30) {
-                        thisAmount += 10000 + 500 * (perf.getAudience() - 20);
-                    }
-                    thisAmount += 300 * perf.getAudience();
-                    break;
-                default:
-                    throw new Exception("unknown type " + play.getType());
-            }
+            thisAmount = amountFor(perf, play);
 
             // ボリューム特典ポイントを加算
             volumeCredits += Math.max(perf.getAudience() - 30, 0);
@@ -42,6 +26,28 @@ public class Statement {
         result.append("Amount owed is ").append(totalAmount / 100).append("\n");
         result.append("You earned ").append(volumeCredits).append(" credits");
         return result.toString();
+    }
+
+    private static int amountFor(Performance perf, Play play) throws Exception {
+        int thisAmount;
+        switch (play.getType()) {
+            case "tragedy":
+                thisAmount = 40000;
+                if (perf.getAudience() > 30) {
+                    thisAmount += 1000 * (perf.getAudience() - 30);
+                }
+                break;
+            case "comedy":
+                thisAmount = 30000;
+                if (perf.getAudience() > 30) {
+                    thisAmount += 10000 + 500 * (perf.getAudience() - 20);
+                }
+                thisAmount += 300 * perf.getAudience();
+                break;
+            default:
+                throw new Exception("unknown type " + play.getType());
+        }
+        return thisAmount;
     }
 
 }
