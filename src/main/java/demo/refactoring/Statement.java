@@ -8,8 +8,6 @@ public class Statement {
         int totalAmount = 0;
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
-        int volumeCredits = totalVolumeCredits(invoice, plays);
-
         for (Performance perf : invoice.getPerformances()) {
             // 注文の内訳を出力
             result.append("  ").append(playFor(plays, perf).getName()).append(": ").append(amountFor(perf, playFor(plays, perf)) / 100).append(" (").append(perf.getAudience()).append(" seats)\n");
@@ -17,7 +15,7 @@ public class Statement {
         }
 
         result.append("Amount owed is ").append(totalAmount / 100).append("\n");
-        result.append("You earned ").append(volumeCredits).append(" credits");
+        result.append("You earned ").append(totalVolumeCredits(invoice, plays)).append(" credits");
         return result.toString();
     }
 
