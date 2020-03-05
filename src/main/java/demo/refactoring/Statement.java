@@ -11,10 +11,14 @@ public class Statement {
 
         for (Performance perf : invoice.getPerformances()) {
             volumeCredits += volumeCreditsFor(perf, plays);
+        }
+
+        for (Performance perf : invoice.getPerformances()) {
             // 注文の内訳を出力
             result.append("  ").append(playFor(plays, perf).getName()).append(": ").append(amountFor(perf, playFor(plays, perf)) / 100).append(" (").append(perf.getAudience()).append(" seats)\n");
             totalAmount += amountFor(perf, playFor(plays, perf));
         }
+
         result.append("Amount owed is ").append(totalAmount / 100).append("\n");
         result.append("You earned ").append(volumeCredits).append(" credits");
         return result.toString();
