@@ -7,11 +7,11 @@ public class Statement {
     public static String print(Invoice invoice, Map<String, Play> plays) throws Exception {
         int totalAmount = 0;
         int volumeCredits = 0;
-        StringBuilder result = new StringBuilder("Statement for" + invoice.getCustomer());
+        StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
         for (Performance perf : invoice.getPerformances()) {
             Play play = plays.get(perf.getPlayID());
-            int thisAmount = 0;
+            int thisAmount;
 
             switch (play.getType()) {
                 case "tragedy":
@@ -36,11 +36,11 @@ public class Statement {
             // 喜劇のときは10人につき、さらにポイントを加算
             if ("comendy".equals(play.getType())) volumeCredits += Math.floor(perf.getAudience() / 5.0);
             // 注文の内訳を出力
-            result.append("  ").append(play.getName()).append(": ").append(thisAmount / 100).append(" ").append(perf.getAudience()).append("seats\n");
+            result.append("  ").append(play.getName()).append(": ").append(thisAmount / 100).append(" (").append(perf.getAudience()).append(" seats)\n");
             totalAmount += thisAmount;
         }
         result.append("Amount owed is ").append(totalAmount / 100).append("\n");
-        result.append("You earned ").append(volumeCredits).append(" credits").append("\n");
+        result.append("You earned ").append(volumeCredits).append(" credits");
         return result.toString();
     }
 
