@@ -6,9 +6,9 @@ public class Statement {
 
     public static String print(Invoice invoice, Map<String, Play> plays) throws Exception {
         int totalAmount = 0;
-        int volumeCredits = 0;
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
+        int volumeCredits = 0;
         for (Performance perf : invoice.getPerformances()) {
             volumeCredits += volumeCreditsFor(perf, plays);
         }
