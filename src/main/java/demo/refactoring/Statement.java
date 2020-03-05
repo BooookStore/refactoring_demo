@@ -7,16 +7,23 @@ public class Statement {
     public static String print(Invoice invoice, Map<String, Play> plays) throws Exception {
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
-        int totalAmount = 0;
+        int totalAmount = totalAmount(invoice, plays);
         for (Performance perf : invoice.getPerformances()) {
             // 注文の内訳を出力
             result.append("  ").append(playFor(plays, perf).getName()).append(": ").append(amountFor(perf, playFor(plays, perf)) / 100).append(" (").append(perf.getAudience()).append(" seats)\n");
-            totalAmount += amountFor(perf, playFor(plays, perf));
         }
 
         result.append("Amount owed is ").append(totalAmount / 100).append("\n");
         result.append("You earned ").append(totalVolumeCredits(invoice, plays)).append(" credits");
         return result.toString();
+    }
+
+    private static int totalAmount(Invoice invoice, Map<String, Play> plays) throws Exception {
+        int totalAmount = 0;
+        for (Performance perf : invoice.getPerformances()) {
+            totalAmount += amountFor(perf, playFor(plays, perf));
+        }
+        return totalAmount;
     }
 
     private static int totalVolumeCredits(Invoice invoice, Map<String, Play> plays) {
