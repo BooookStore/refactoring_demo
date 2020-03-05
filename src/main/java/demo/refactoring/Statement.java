@@ -10,10 +10,7 @@ public class Statement {
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
         for (Performance perf : invoice.getPerformances()) {
-            // ボリューム特典ポイントを加算
-            volumeCredits += Math.max(perf.getAudience() - 30, 0);
-            // 喜劇のときは10人につき、さらにポイントを加算
-            if ("comendy".equals(playFor(plays, perf).getType())) volumeCredits += Math.floor(perf.getAudience() / 5.0);
+            volumeCredits += volumeCreditsFor(perf, plays);
             // 注文の内訳を出力
             result.append("  ").append(playFor(plays, perf).getName()).append(": ").append(amountFor(perf, playFor(plays, perf)) / 100).append(" (").append(perf.getAudience()).append(" seats)\n");
             totalAmount += amountFor(perf, playFor(plays, perf));
@@ -21,6 +18,15 @@ public class Statement {
         result.append("Amount owed is ").append(totalAmount / 100).append("\n");
         result.append("You earned ").append(volumeCredits).append(" credits");
         return result.toString();
+    }
+
+    private static int volumeCreditsFor(Performance perf, Map<String, Play> plays) {
+        int volumeCredits = 0;
+        // ボリューム特典ポイントを加算
+        volumeCredits += Math.max(perf.getAudience() - 30, 0);
+        // 喜劇のときは10人につき、さらにポイントを加算
+        if ("comendy".equals(playFor(plays, perf).getType())) volumeCredits += Math.floor(perf.getAudience() / 5.0);
+        return volumeCredits;
     }
 
     private static Play playFor(Map<String, Play> plays, Performance perf) {
