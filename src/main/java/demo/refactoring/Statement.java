@@ -8,10 +8,7 @@ public class Statement {
         int totalAmount = 0;
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
-        int volumeCredits = 0;
-        for (Performance perf : invoice.getPerformances()) {
-            volumeCredits += volumeCreditsFor(perf, plays);
-        }
+        int volumeCredits = totalVolumeCredits(invoice, plays);
 
         for (Performance perf : invoice.getPerformances()) {
             // 注文の内訳を出力
@@ -22,6 +19,14 @@ public class Statement {
         result.append("Amount owed is ").append(totalAmount / 100).append("\n");
         result.append("You earned ").append(volumeCredits).append(" credits");
         return result.toString();
+    }
+
+    private static int totalVolumeCredits(Invoice invoice, Map<String, Play> plays) {
+        int volumeCredits = 0;
+        for (Performance perf : invoice.getPerformances()) {
+            volumeCredits += volumeCreditsFor(perf, plays);
+        }
+        return volumeCredits;
     }
 
     private static int volumeCreditsFor(Performance perf, Map<String, Play> plays) {
